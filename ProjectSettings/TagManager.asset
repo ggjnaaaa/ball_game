@@ -8,6 +8,9 @@ TagManager:
   - Hole
   - Second floor
   - Cabin
+  - floor
+  - Obstacle
+  - Collectible
   layers:
   - Default
   - TransparentFX

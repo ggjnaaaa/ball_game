@@ -2,12 +2,72 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //~~~~~~    Скрипт для разных кнопок    ~~~~~~//
 public class ButtonsScript : MonoBehaviour
 {
+    private void OnEnable()
+    {
+        PlayerScript.OnPlayerWin += StartWinTimer;
+        DeadZoneScript.OnPlayerLose += StartLoseTimer;
+    }
+
+    private void OnDisable()
+    {
+        PlayerScript.OnPlayerWin -= StartWinTimer;
+        DeadZoneScript.OnPlayerLose -= StartLoseTimer;
+    }
+
     public GameObject finish;
     public GameObject winMenu;
+    public GameObject panel;
+    public GameObject loseMenu;
+
+    public Text WinTimer;
+    public Text LoseTimer;
+
+    public void StartWinTimer() => ShowPanel(true);
+    public void StartLoseTimer() => ShowPanel(false);
+
+    private const float countdown = 5f;
+    private float timeElapsed = 0f;
+    private bool isCountingDown = false;
+    private bool isWin = false;
+
+    void Update()
+    {
+        if (!isCountingDown) return;
+
+        timeElapsed += Time.deltaTime;
+        float displayTime = Mathf.Ceil(countdown - timeElapsed);
+
+        WinTimer.text = $"Next level in: {displayTime}";
+        LoseTimer.text = $"Replay in: {displayTime}";
+        Debug.Log(timeElapsed);
+
+        if (timeElapsed >= countdown)
+        {
+            if (isWin) NextLevel();
+            else ReplayLevel();
+            isCountingDown = false;
+        }
+    }
+
+    private void ShowPanel(bool win)
+    {
+        Debug.Log("OBIHHIBN");
+        if (isCountingDown) return;
+        Debug.Log("sdfkvm;fokl");
+
+        timeElapsed = 0f;
+        isWin = win;
+        isCountingDown = true;
+
+        panel.SetActive(true);
+        if (win) winMenu.SetActive(true);
+        else loseMenu.gameObject.SetActive(true);
+    }
 
     //~~~~~~    Открывает сцену "Menu" (Кнопка "В меню")    ~~~~~~//
     public void ToMenu()

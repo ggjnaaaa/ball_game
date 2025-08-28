@@ -5,6 +5,9 @@ using UnityEngine.UI;
 //~~~~~~    Скрипт управления игроком    ~~~~~~//
 public class PlayerScript : MonoBehaviour
 {
+    public static event Action OnPlayerWin;
+
+    public string CollectibleTag = "Collectible";
     public Camera cam;
     public GameObject player;
     public GameObject deadZone;
@@ -21,6 +24,29 @@ public class PlayerScript : MonoBehaviour
     bool isPlay;        // Проверка активна ли сейчас игра
     bool isNotFly;      // Проверка летит ли объект
 
+    private int score = 0;
+    public int Score
+    {
+        get => score;
+        private set
+        {
+            ScoreText.text = $"Collect:\n{value.ToString()}";
+            score = value;
+        }
+    }
+    public Text ScoreText;
+    private float timeElapsed = 0f;
+    public float TimeElapsed
+    {
+        get => timeElapsed;
+        private set
+        {
+            timeElapsed = value;
+            UpdateTimerUI();
+        }
+    }
+    public Text TimerText;
+
     void Start()
     {
         //~~~~~~    Задаются дефолтные значения    ~~~~~~//
@@ -28,12 +54,15 @@ public class PlayerScript : MonoBehaviour
         line = player.GetComponent<LineRenderer>();
         isPlay = true;
         isNotFly = true;
+        TimeElapsed = 0f;
     }
 
     void Update()
     {
         if (isPlay)
         {
+            TimeElapsed += Time.deltaTime;
+
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
@@ -77,8 +106,7 @@ public class PlayerScript : MonoBehaviour
         if (collision.transform.CompareTag("Hole") && isPlay)
         {
             //~~~~~~    Открытие меню победы    ~~~~~~//
-            panel.SetActive(true);
-            win.SetActive(true);
+            OnPlayerWin?.Invoke();
 
             //~~~~~~    Сохранение данных если уровень не был пройден ранее    ~~~~~~//
             int level = SavesData.CurrentLevel();
@@ -88,6 +116,24 @@ public class PlayerScript : MonoBehaviour
 
             isPlay = false;
         }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        //~~~~~~    Если игрок коснулся объекта с тэгом "Collectible"    ~~~~~~//
+        if (other.CompareTag(CollectibleTag) && isPlay)
+        {
+            Score++;
+        }
+    }
+
+    private void UpdateTimerUI()
+    {
+        int minutes = Mathf.FloorToInt(timeElapsed / 60);
+        int seconds = Mathf.FloorToInt(timeElapsed % 60);
+
+        if (TimerText != null)
+            TimerText.text = $"Timer:\n{minutes:00}:{seconds:00}";
     }
 
     //~~~~~~    Если игрок перестал касаться чего-либо, то он летит    ~~~~~~//

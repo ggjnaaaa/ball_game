@@ -1,12 +1,17 @@
 using UnityEngine;
+using System;
 
 //~~~~~~    Скрипт для геймобъекта Dead Zone    ~~~~~~//
 // Проверяет пересечение своего колидера с объектами с тэгом "Игрок"
 public class DeadZoneScript : MonoBehaviour
 {
+    public static event Action OnPlayerLose;
+
     public GameObject lose;
     public GameObject panel;
     public GameObject player;
+
+    private bool isLose = false;
 
     private void Update()
     {
@@ -31,7 +36,8 @@ public class DeadZoneScript : MonoBehaviour
     //~~~~~~    Включение меню проигрыша    ~~~~~~//
     private void end()
     {
-        lose.SetActive(true);
-        panel.SetActive(true);
+        if (isLose) return;
+        isLose = true;
+        OnPlayerLose?.Invoke();
     }
 }
