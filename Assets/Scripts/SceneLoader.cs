@@ -10,7 +10,7 @@ public static class SceneLoader
     // Загружаем меню без экрана загрузки
     public static void LoadMenu()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
     // Перезапуск текущего уровня
@@ -31,7 +31,7 @@ public static class SceneLoader
     public static void LoadLevel(int sceneIndex)
     {
         _targetSceneIndex = sceneIndex + 1;
-        SceneManager.LoadScene(0); // всегда сначала грузим экран загрузки
+        SceneManager.LoadScene(1); // всегда сначала грузим экран загрузки
     }
 
     public static IEnumerator LoadTargetAsync(System.Action<float> onProgress = null, float artificialDelay = 0.01f)
