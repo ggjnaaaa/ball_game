@@ -14,9 +14,15 @@ public class CollectibleGridGenerator : MonoBehaviour
     public float raisingPoints = 1f;
     public GameObject player;
     public float minDistanceToPlayer = 2f;
+    public static int TotalCollectibles { get; private set; }
 
     private Bounds floorBounds;
     private Collider[] obstacleColliders;
+
+    void Awake()
+    {
+        TotalCollectibles = collectibleCount;
+    }
 
     public void Start()
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-//~~~~~~    Скрипт для разных кнопок    ~~~~~~//
+//~~~~~~    пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ    ~~~~~~//
 public class ButtonsScript : MonoBehaviour
 {
     private void OnEnable()
@@ -44,7 +44,6 @@ public class ButtonsScript : MonoBehaviour
 
         WinTimer.text = $"Next level in: {displayTime}";
         LoseTimer.text = $"Replay in: {displayTime}";
-        Debug.Log(timeElapsed);
 
         if (timeElapsed >= countdown)
         {
@@ -56,36 +55,39 @@ public class ButtonsScript : MonoBehaviour
 
     private void ShowPanel(bool win)
     {
-        Debug.Log("OBIHHIBN");
         if (isCountingDown) return;
-        Debug.Log("sdfkvm;fokl");
 
         timeElapsed = 0f;
         isWin = win;
         isCountingDown = true;
 
-        panel.SetActive(true);
-        if (win) winMenu.SetActive(true);
-        else loseMenu.gameObject.SetActive(true);
+        GameObject obj;
+        if (win) obj = winMenu;
+        else obj = loseMenu;
+
+        var mac = panel.GetComponent<MenuAnimatorController>();
+        mac.Show();
+        mac = obj.GetComponent<MenuAnimatorController>();
+        mac.Show();
     }
 
-    //~~~~~~    Открывает сцену "Menu" (Кнопка "В меню")    ~~~~~~//
+    //~~~~~~    пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ "Menu" (пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅ пїЅпїЅпїЅпїЅ")    ~~~~~~//
     public void ToMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneLoader.LoadMenu();
     }
 
-    //~~~~~~    Снова запускает тот же уровень (кнопка "Новая игра" в меню проигрыша)    ~~~~~~//
+    //~~~~~~    пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ" пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)    ~~~~~~//
     public void ReplayLevel()
     {
         if (File.Exists(Application.persistentDataPath
           + "/MySaveData.dat"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneLoader.ReloadLevel();
         }
     }
 
-    //~~~~~~    Запускает следующий уровень (кнопка "Следующий уровень" в меню выигрыша)    ~~~~~~//
+    //~~~~~~    пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ" пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)    ~~~~~~//
     public void NextLevel()
     {
         if (File.Exists(Application.persistentDataPath
@@ -94,11 +96,11 @@ public class ButtonsScript : MonoBehaviour
             int level = SavesData.CurrentLevel();
             int countLevels = SavesData.CountLevels();
 
-            Debug.Log(level);
-            Debug.Log(countLevels);
-
             if (level < countLevels && level != -1)
-                SceneManager.LoadScene(Convert.ToInt32(level + 1));
+            {
+                SceneLoader.LoadNextLevel();
+                SavesData.Save(level);
+            }
             else if (level >= countLevels)
             {
                 winMenu.SetActive(false);

@@ -8,30 +8,30 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-//~~~~~~    Скрипт для кнопок меню уровней (сцена "Menu", объект в канвасе "Levels Menu")    ~~~~~~//
+//~~~~~~    пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅ "Menu", пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ "Levels Menu")    ~~~~~~//
 public class LevelsScript : MonoBehaviour
 {
     public GameObject levelsMenu;
 
     void Start()
     {
-        //~~~~~~    Отключение кнопок, переводящих на уровни дальше последнего открытого    ~~~~~~//
-        GameObject[] objects = GameObject.FindGameObjectsWithTag("levelButton");  // Массив объектов с тэгом "levelButton"
+        //~~~~~~    пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ    ~~~~~~//
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("levelButton");  // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ "levelButton"
         int lastLevel = SavesData.LastOpenedLevel();
 
         foreach (GameObject btn in objects)
         {
-            if (Convert.ToInt32(btn.name.Substring(5)) > lastLevel)  // Через имя кнопки узнаётся уровень, на который она переводит
+            if (Convert.ToInt32(btn.name.Substring(5)) > lastLevel)  // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             {
                 btn.transform.GetComponent<UnityEngine.UI.Button>().interactable = false;
             }
         }
     }
 
-    //~~~~~~    Нажатие на кнопку перехода на другой уровень    ~~~~~~//
+    //~~~~~~    пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ    ~~~~~~//
     public void ButtonClick()
     {
-        SceneManager.LoadScene(
+        SceneLoader.LoadLevel(
             Convert.ToInt32(
                 EventSystem.current.currentSelectedGameObject.name.Substring(5)));
     }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerScript : MonoBehaviour
 {
     public static event Action OnPlayerWin;
+    public static event Action<float, int> OnLevelCompleted;
 
     public string CollectibleTag = "Collectible";
     public Camera cam;
@@ -107,6 +108,7 @@ public class PlayerScript : MonoBehaviour
         {
             //~~~~~~    Открытие меню победы    ~~~~~~//
             OnPlayerWin?.Invoke();
+            OnLevelCompleted?.Invoke(TimeElapsed, score);
 
             //~~~~~~    Сохранение данных если уровень не был пройден ранее    ~~~~~~//
             int level = SavesData.CurrentLevel();

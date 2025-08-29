@@ -4,12 +4,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//~~~~~~    Класс для работы с сохранениями    ~~~~~~//
+//~~~~~~    пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ    ~~~~~~//
 public class SavesData : MonoBehaviour
 {
     private static int? level;
 
-    //~~~~~~    Сохранение данных    ~~~~~~//
+    //~~~~~~    пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ    ~~~~~~//
     public static void Save(int lvlToSave)
     {
         BinaryFormatter bf = new BinaryFormatter();
@@ -19,10 +19,10 @@ public class SavesData : MonoBehaviour
         data.level = lvlToSave;
         bf.Serialize(file, data);
         file.Close();
-        Debug.Log("Game data saved!");
+        Debug.Log($"Game data saved! level: {level}");
     }
 
-    //~~~~~~    Возвращает последний открытый уровень    ~~~~~~//
+    //~~~~~~    пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ    ~~~~~~//
     public static int LastOpenedLevel()
     {
         if (File.Exists(Application.persistentDataPath
@@ -35,7 +35,7 @@ public class SavesData : MonoBehaviour
             SaveData data = (SaveData)bf.Deserialize(file);
             file.Close();
             level = data.level;
-            Debug.Log("Game data loaded!");
+            Debug.Log($"Game data loaded! level: {level}");
 
             return Convert.ToInt32(level);
         }
@@ -43,7 +43,7 @@ public class SavesData : MonoBehaviour
             return -1;
     }
 
-    //~~~~~~    Удаляет файл с сохранениями    ~~~~~~//
+    //~~~~~~    пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ    ~~~~~~//
     public static void DeleteSave()
     {
         if (File.Exists(Application.persistentDataPath
@@ -57,14 +57,14 @@ public class SavesData : MonoBehaviour
             Debug.LogError("No save data to delete.");
     }
 
-    //~~~~~~    Возвращает открытый уровень    ~~~~~~//
+    //~~~~~~    пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ    ~~~~~~//
     public static int CurrentLevel() => SceneManager.GetActiveScene().buildIndex;
 
-    //~~~~~~    Возвращает общее количество уровней    ~~~~~~//
+    //~~~~~~    пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ    ~~~~~~//
     public static int CountLevels() => SceneManager.sceneCountInBuildSettings - 1;
 }
 
-//~~~~~~    Класс для отправки данных в файл с сохранениями    ~~~~~~//
+//~~~~~~    пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ    ~~~~~~//
 [Serializable]
 class SaveData
 {
